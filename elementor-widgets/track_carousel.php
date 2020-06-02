@@ -305,22 +305,14 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
                     <?php get_template_part(  $slug, 'featured-image' );  ?>
                     <div class="img-overlay text-white">
                         <div class="figcaption">
-                            <ul class="list-inline d-flex align-items-center justify-content-between">
-                                <li class="list-inline-item">
-                                    <?php get_template_part(  'templates/favourites/favourites', 'button' );  ?>
-                                </li>
-                                <li class="list-inline-item ">
-                                    <?php
-                                          set_query_var( 'icon_classes', 's-48' );
-                                          get_template_part( $slug, 'url' );  ?>
-                                </li>
-                                <?php if(!empty($album)) {   ?>
-                                <li class="list-inline-item">
-                                    <?php //echo esc_url( get_permalink($album->ID) ); ?>
-                                    <a href="<?php the_permalink(); ?>"><i class="icon-more s-18 pt-3"></i></a>
-                                </li>
-                                <?php } ?>
-                            </ul>
+                            <div class="d-flex hover-actions">      
+                                <?php get_template_part(  'templates/favourites/favourites', 'button' ); 
+                                        set_query_var( 'icon_classes', 's-48' );
+                                        get_template_part( $slug, 'url' ); 
+                                        //echo esc_url( get_permalink($album->ID) );
+                                 ?>
+                                <a href="<?php the_permalink(); ?>"><i class="icon-more s-18 pt-3"></i></a>
+                            </div>
                             <div class="text-center mt-5">
                                 <h5 class="text-truncate track-title"><?php the_title(); ?></h5>
                                 <span><?php
