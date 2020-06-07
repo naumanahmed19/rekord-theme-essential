@@ -305,7 +305,7 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
                     <?php get_template_part(  $slug, 'featured-image' );  ?>
                     <div class="img-overlay text-white">
                         <div class="figcaption">
-                            <div class="d-flex hover-actions">      
+                            <div class="d-flex hover-actions justify-content-between">      
                                 <?php get_template_part(  'templates/favourites/favourites', 'button' ); 
                                         set_query_var( 'icon_classes', 's-48' );
                                         get_template_part( $slug, 'url' ); 
