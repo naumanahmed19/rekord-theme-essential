@@ -89,7 +89,21 @@ final class Rekord_Theme_Essential {
 	 * @access public
 	 */
 	public function init() {
-        
+
+	
+
+		if( ! class_exists( 'XV_Updater' ) ){
+			include_once( plugin_dir_path( __FILE__ ) . 'updater.php' );
+			$updater = new Rekord_Updater( __FILE__ );
+			$updater->set_username( 'naumanahmed19' );
+			$updater->set_repository( 'rekord-theme-essential' );
+			/*
+				$updater->authorize( 'abcdefghijk1234567890' ); // Your auth code goes here for private repos
+			*/
+			$updater->initialize();
+	
+		}
+
         require_once( __DIR__ . '/inc/custom-posts.php' );
         
         //WP Widgets
@@ -122,6 +136,8 @@ final class Rekord_Theme_Essential {
 		// Once we get here, We have passed all validation checks so we can safely include our plugin
 		require_once( 'plugin.php' );
 	}
+
+	
 
 	/**
 	 * Admin notice
