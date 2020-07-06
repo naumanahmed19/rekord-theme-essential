@@ -89,8 +89,20 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
                 ]
             );
 
-       
-    
+            $this->add_control(
+                'style',
+                [
+                    'label' => __( 'Carousel Style', 'rekord' ),
+                    'type' => \Elementor\Controls_Manager::SELECT,
+                    'label_block' => true,
+                    'default' => 'full',
+                    'options' => [
+                        'mini'  => __( 'Mini', 'rekord' ),
+                        'full' => __( 'full', 'rekord' ),
+                    ],
+                ]
+            );
+
             $this->add_control(
                 'lg_items',
                 [
@@ -251,10 +263,13 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
             <h4><?php echo  $settings['title']; ?></h4>
             <p><?php echo  $settings['subtitle']; ?></p>
         </div>
+
+        <?php if(!empty($settings['view_all_label'])): ?>
         <a href="<?php echo $settings['view_all_url']['url'] ?>">
         <?php echo  $settings['view_all_label'] ?>
             <i class="<?php echo get_theme_mod('layout_rtl') ?  'icon-angle-left mr-3': 'icon-angle-right ml-3' ;?>"></i>
         </a>
+        <?php endif; ?>
   
     </div>
 
@@ -297,8 +312,26 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
         if ($q->have_posts()) : while ($q->have_posts()) : $q->the_post(); 
          $artists = rekord_get_field('track_artists');
          $album = rekord_get_field('track_album');
-       
         ?>
+
+        <?php if($settings['style'] == 'mini') :?>
+            <div>
+                <figure class="mb-2">
+                    <div class="img-wrapper r-10">
+                    <?php get_template_part(  $slug, 'featured-image' );  ?>
+                        <div class="img-overlay text-white p-5">
+                            <div class="center-center">
+                            <?php 
+                                        set_query_var( 'icon_classes', 's-48' );
+                                        get_template_part( $slug, 'url' ); 
+                                    
+                                 ?>
+                            </div>
+                        </div>
+                    </div>
+                </figure>
+            </div>
+        <?php else: ?>
         <div>
             <figure>
                 <div class="img-wrapper">
@@ -333,6 +366,7 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
                 </div>
             </figure>
         </div>
+        <?php endif;  ?>
 
 
 
