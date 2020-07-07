@@ -273,6 +273,7 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
         if ($q->have_posts()) : while ($q->have_posts()) : $q->the_post(); 
 
         set_query_var( 'author_info', $settings['author'] );
+        set_query_var( 'imageSize', 'large');
         get_template_part('templates/blog/blog', 'widget');
           
         ?>

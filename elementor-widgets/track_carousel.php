@@ -318,7 +318,9 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
             <div>
                 <figure class="mb-2">
                     <div class="img-wrapper r-10">
-                    <?php get_template_part(  $slug, 'featured-image' );  ?>
+                    <?php
+             
+                    get_template_part(  $slug, 'featured-image' );  ?>
                         <div class="img-overlay text-white p-5">
                             <div class="center-center">
                             <?php 
@@ -335,7 +337,8 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
         <div>
             <figure>
                 <div class="img-wrapper">
-                    <?php get_template_part(  $slug, 'featured-image' );  ?>
+                    <?php
+                    get_template_part(  $slug, 'featured-image' );  ?>
                     <div class="img-overlay text-white">
                         <div class="figcaption">
                             <div class="d-flex hover-actions justify-content-between">      
