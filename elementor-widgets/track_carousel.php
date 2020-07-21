@@ -257,7 +257,7 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
             ?>
 
 <!--New Releases-->
-<section class="section p-md-5 p-3">
+<section>
     <div class="d-flex relative align-items-center justify-content-between">
         <div class="mb-4">
             <h4><?php echo  $settings['title']; ?></h4>

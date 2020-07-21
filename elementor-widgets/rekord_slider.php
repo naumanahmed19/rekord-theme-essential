@@ -340,10 +340,10 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
             data-controls="<?php echo $settings['controls'] ? $settings['controls'] : false; ?>"
             data-loop=" <?php echo $settings['loop']?  $settings['loop'] : false; ?> ">
             <?php  foreach (  $settings['list'] as $item ) {?>
-            <div class=" xv-slide" data-bg-possition="top"
+            <div class="xv-slide" data-bg-possition="top"
                 style="background-image:url('<?php echo $item['list_image']['url'] ?>');">
                 <div class="has-bottom-gradient">
-                    <div class="p-md-5 p-3">
+                    <div class="wrapper p-md-5 p-3">
                         <div class="row">
 
                             <div class="col-12 col-lg-6 fadeInRight animated go">
