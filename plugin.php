@@ -65,6 +65,7 @@ class Plugin {
 		require_once( __DIR__ . '/elementor-widgets/events-counter.php' );
 		require_once( __DIR__ . '/elementor-widgets/podcasts.php' );
 		require_once( __DIR__ . '/elementor-widgets/podcasts_featured.php' );
+		require_once( __DIR__ . '/elementor-widgets/play-button.php' );
  
 
 	}
@@ -90,6 +91,7 @@ class Plugin {
 		\Elementor\Plugin::instance()->widgets_manager->register_widget_type( new Widgets\Events_Counter() );
 		\Elementor\Plugin::instance()->widgets_manager->register_widget_type( new Widgets\Rekord_Podcasts() );
 		\Elementor\Plugin::instance()->widgets_manager->register_widget_type( new Widgets\Rekord_Podcasts_Featured() );
+		\Elementor\Plugin::instance()->widgets_manager->register_widget_type( new Widgets\Widget_Play_Button() );
 	
 	}
 
@@ -108,8 +110,6 @@ class Plugin {
 
 		// Register widgets
 		add_action( 'elementor/widgets/widgets_registered', [ $this, 'register_widgets' ] );
-
-
 
 
 	}
