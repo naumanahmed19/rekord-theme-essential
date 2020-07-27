@@ -531,7 +531,6 @@ class Widget_Play_Button extends Widget_Base {
 	
 			<span <?php echo $this->get_render_attribute_string( 'icon-align' ); ?>>
 				<?php if(function_exists('rekord_play_icon_template')) 	rekord_play_icon_template(); ?>
-				
 			</span>
 
 			<span <?php echo $this->get_render_attribute_string( 'text' ); ?>><?php echo $settings['text']; ?></span>
