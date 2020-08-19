@@ -500,6 +500,6 @@ function create_podcast_taxonomies() {
 
 
 add_action('init', function () {
-    add_rewrite_rule('gallery/?$','index.php?pagename=gallery', 'top');
+    add_rewrite_rule('^gallery/page/([0-9]+)','index.php?pagename=gallery&paged=$matches[1]', 'top');
     flush_rewrite_rules();
 }, 1000);
