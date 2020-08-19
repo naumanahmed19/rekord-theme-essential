@@ -68,9 +68,7 @@ if ( ! function_exists('rekord_post_type_gallery') ) {
             'menu_position' => 13,
             'supports'      => array( 'title','editor','thumbnail'),
             'has_archive'   => false,
-            
-             'rewrite' => array( 'slug' => 'gallery', 'with_front' => true ),
-            // 'taxonomies' => array('post_tag') ,
+            'rewrite' => array( 'slug' => 'gallery', 'with_front' => true ),
         );
         register_post_type( 'gallery', $args ); 
              $set = get_option('gallery');
@@ -499,3 +497,9 @@ function create_podcast_taxonomies() {
 
     register_taxonomy( 'podcast-categories', array( 'podcast', ), $args );
 }
+
+
+add_action('init', function () {
+    add_rewrite_rule('gallery/?$','index.php?pagename=gallery', 'top');
+    flush_rewrite_rules();
+}, 1000);
