@@ -20,9 +20,10 @@ function rekord_api_get_albums() {
 			$data[$i]['title'] = $post->post_title;
 			$data[$i]['content'] = $post->post_content;
 			$data[$i]['slug'] = $post->post_name;
-			$data[$i]['featured_image']['thumbnail'] = get_the_post_thumbnail_url($post->ID, 'thumbnail');
-			$data[$i]['featured_image']['medium'] = get_the_post_thumbnail_url($post->ID, 'medium');
-			$data[$i]['featured_image']['large'] = get_the_post_thumbnail_url($post->ID, 'large');
+			$data[$i]['media']['thumbnail'] = get_the_post_thumbnail_url($post->ID, 'thumbnail');
+			$data[$i]['media']['medium'] = get_the_post_thumbnail_url($post->ID, 'medium');
+			$data[$i]['media']['large'] = get_the_post_thumbnail_url($post->ID, 'large');
+			$data[$i]['media']['cover'] = rekord_get_field('cover',$post->ID)['url']  ;
 			$data[$i]['tracks'] = rekord_album_tracks($id);
 			
 			$i++;
@@ -74,9 +75,9 @@ function rekord_data_tracks($posts){
 			$data[$i]['type'] =  rekord_get_field('track',$post->ID);
 			$data[$i]['stream_type'] =  rekord_get_field('stream_type',$post->ID);
 			$data[$i]['url'] = $url ;
-			$data[$i]['featured_image']['thumbnail'] = get_the_post_thumbnail_url($post->ID, 'thumbnail');
-			$data[$i]['featured_image']['medium'] = get_the_post_thumbnail_url($post->ID, 'medium');
-			$data[$i]['featured_image']['large'] = get_the_post_thumbnail_url($post->ID, 'large');
+			$data[$i]['media']['thumbnail'] = get_the_post_thumbnail_url($post->ID, 'thumbnail');
+			$data[$i]['media']['medium'] = get_the_post_thumbnail_url($post->ID, 'medium');
+			$data[$i]['media']['large'] = get_the_post_thumbnail_url($post->ID, 'large');
 			$data[$i]['time'] = rekord_get_field('track_time', $post->ID);
 			$data[$i]['artist'] =  rekord_get_field('track_artists',$post->ID);
 	
@@ -122,9 +123,9 @@ function wl_post( $slug ) {
 	$data['title'] = $post[0]->post_title;
 	$data['content'] = $post[0]->post_content;
 	$data['slug'] = $post[0]->post_name;
-	$data['featured_image']['thumbnail'] = get_the_post_thumbnail_url($post[0]->ID, 'thumbnail');
-	$data['featured_image']['medium'] = get_the_post_thumbnail_url($post[0]->ID, 'medium');
-	$data['featured_image']['large'] = get_the_post_thumbnail_url($post[0]->ID, 'large');
+	$data['media']['thumbnail'] = get_the_post_thumbnail_url($post[0]->ID, 'thumbnail');
+	$data['media']['medium'] = get_the_post_thumbnail_url($post[0]->ID, 'medium');
+	$data['media']['large'] = get_the_post_thumbnail_url($post[0]->ID, 'large');
 
 	return $data;
 }
