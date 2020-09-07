@@ -75,9 +75,13 @@ function rekord_data_tracks($posts){
 			$data[$i]['type'] =  rekord_get_field('track',$post->ID);
 			$data[$i]['stream_type'] =  rekord_get_field('stream_type',$post->ID);
 			$data[$i]['url'] = $url ;
-			$data[$i]['media']['thumbnail'] = get_the_post_thumbnail_url($post->ID, 'thumbnail');
-			$data[$i]['media']['medium'] = get_the_post_thumbnail_url($post->ID, 'medium');
-			$data[$i]['media']['large'] = get_the_post_thumbnail_url($post->ID, 'large');
+
+			if(get_the_post_thumbnail_url($post->ID, 'thumbnail')){
+				$data[$i]['media']['thumbnail'] = get_the_post_thumbnail_url($post->ID, 'thumbnail');
+				$data[$i]['media']['medium'] = get_the_post_thumbnail_url($post->ID, 'medium');
+				$data[$i]['media']['large'] = get_the_post_thumbnail_url($post->ID, 'large');
+			}
+		
 			$data[$i]['time'] = rekord_get_field('track_time', $post->ID);
 			$data[$i]['artist'] =  rekord_get_field('track_artists',$post->ID);
 	
