@@ -24,7 +24,7 @@ function rekord_api_get_albums() {
 			$data[$i]['media']['medium'] = get_the_post_thumbnail_url($post->ID, 'medium');
 			$data[$i]['media']['large'] = get_the_post_thumbnail_url($post->ID, 'large');
 			$data[$i]['media']['cover'] = rekord_get_field('cover',$post->ID)['url']  ;
-			$data[$i]['tracks'] = rekord_album_tracks($id);
+			$data[$i]['tracks'] = rekord_album_tracks( $post->ID);
 			
 			$i++;
 		}
