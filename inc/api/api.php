@@ -43,6 +43,8 @@ function rekord_album_tracks($id){
 
 
 function rekord_api_get_tracks() {
+
+
 	$posts = rekord_api_get_posts('track');
 	$data = rekord_data_tracks($posts);
 	return [
@@ -50,6 +52,7 @@ function rekord_api_get_tracks() {
 		'status' => 200
 	];
 }
+
 
 
 
@@ -107,8 +110,16 @@ function rekord_api_get_posts($post_type){
 		'post_type'       => $post_type
 	);
 
+
+	if(!empty($_GET['q'])){
+		var_dump(esc_attr( $_GET['q']));
+		$args['s'] =  esc_attr( $_GET['q']);
+		$args['posts_per_page'] = -1;
+	}
+
 	return  get_posts($args);
 }
+
 
 
 
