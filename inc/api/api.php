@@ -3,7 +3,7 @@
  * Plugin Name: Rekord API
  * Plugin URI: 
  * Description: API for Rekord WordPress Theme
- * Version: 1.1
+ * Version: 1.3
  * Author: xvelopers
  * Author URI: http://xvelopers.com
  */
@@ -97,17 +97,34 @@ function rekord_data_tracks($posts){
 }
 
 
-
-
 function rekord_api_get_taxonomy(){
 	$type = !empty($_GET['type']) ? $_GET['type'] : '';
 	$terms = get_terms($type); 
 
 	return $terms;
 }
-function rekord_api_get_posts($post_type){
 
+
+function rekord_api_get_posts($post_type){
+	$paged = $_GET['paged'] ?$_GET['paged']: 1;
+	$postsPerPage = !empty($_GET['numberposts'] )? $_GET['numberposts'] : 2;
+	$postOffset = $paged * $postsPerPage;
+	$args = array(
+		'posts_per_page'  => $postsPerPage,
+		//'category_name'   => $btmetanm,
+		'offset'          => $postOffset,
+		'post_type'       => $post_type
+	);
+
+
+	if(!empty($_GET['q'])){
+		$args['s'] =  esc_attr( $_GET['q']);
+		$args['posts_per_page'] = -1;
+	}
+
+	return  get_posts($args);
 }
+
 
 
 
@@ -135,9 +152,10 @@ function wl_post( $slug ) {
 
 add_action('rest_api_init', function() {
 
+	
 	$routes = ['posts','albums','tracks','taxonomy'];
 	foreach($routes as $route){
-		register_rest_route('wl/v1',str_replace("_","-",$route) , [
+		register_rest_route('wl/v1', $route, [
 			'methods' => 'GET',
 			'callback' => 'rekord_api_get_'.$route,
 		]);
