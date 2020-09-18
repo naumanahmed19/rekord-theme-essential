@@ -145,32 +145,32 @@ function rekord_api_get_explore($post_type){
 	$sections =  rekord_get_field('explore_screen', 'option');
 
 	foreach($sections as $section){
-		$data[$i]['title'] = $section['title'];
-		$data[$i]['type'] = $section['select_post_type'];
-		$data[$i]['number_of_post'] = $section['number_of_post'];
+		$data[$i]['title'] = $section['r_title'];
+		$data[$i]['type'] = $section['r_post_type'];
+		$data[$i]['r_number_of_post'] = $section['r_number_of_post'];
 
 
 		$args = array(
-			'posts_per_page'  => $section['number_of_post'],
+			'posts_per_page'  => $section['r_number_of_post'],
 			//'category_name'   => $btmetanm,
 			'offset'          => $postOffset,
-			'post_type'       =>  $section['select_post_type']
+			'post_type'       =>  $section['r_post_type']
 		);
 
 		
-		if($section['select_post_type'] == 'album'){
+		if($section['r_post_type'] == 'album'){
 			$posts = get_posts($args);
 			$data[$i]['posts'] = rekord_api_attach_album_fields($posts );
 		}
 		
-		if($section['select_post_type'] == 'track'){
+		if($section['r_post_type'] == 'track'){
 
 			$posts = rekord_api_get_posts('track');
 		
 			$data[$i]['posts'] =rekord_api_attach_track_fields($posts);
 		}
 
-		//$data['sections'][$i] = $section['select_post_type'];	
+		//$data['sections'][$i] = $section['r_post_type'];	
 
 		$i++;
 	}
@@ -228,16 +228,45 @@ add_action('rest_api_init', function() {
 
 
 
-if( function_exists('acf_add_local_field_group') ):
+
+	
+if( function_exists('acf_add_options_page') ) {
+  
+	acf_add_options_page(array(
+	  'page_title' 	=> 'Rekord App Settings',
+	  'menu_title'	=> 'Rekord App',
+	  'menu_slug' 	=> 'rekord-app',
+	  'capability'	=> 'edit_posts',
+	//  'parent_slug'	=> 'edit.php?post_type=podcast',
+	  'redirect'		=> false
+	));
+  }
+  if( function_exists('acf_add_local_field_group') ):
 
 	acf_add_local_field_group(array(
 		'key' => 'group_5f64bff58c3d2',
-		'title' => 'Rekord Mobile API',
+		'title' => 'Rekord Mobile',
 		'fields' => array(
 			array(
-				'key' => 'field_5f64c23da4525',
+				'key' => 'field_5f64ef6a615ed',
 				'label' => 'Explore Screen',
-				'name' => 'explore_screen',
+				'name' => '',
+				'type' => 'tab',
+				'instructions' => '',
+				'required' => 0,
+				'conditional_logic' => 0,
+				'wrapper' => array(
+					'width' => '',
+					'class' => '',
+					'id' => '',
+				),
+				'placement' => 'left',
+				'endpoint' => 0,
+			),
+			array(
+				'key' => 'field_5f64c23da4525',
+				'label' => 'Explore Screen Settings',
+				'name' => 'r_explore_screen',
 				'type' => 'repeater',
 				'instructions' => 'Add explore screen sections',
 				'required' => 0,
@@ -256,7 +285,7 @@ if( function_exists('acf_add_local_field_group') ):
 					array(
 						'key' => 'field_5f64c388a4526',
 						'label' => 'Title',
-						'name' => 'title',
+						'name' => 'r_title',
 						'type' => 'text',
 						'instructions' => 'Add section title',
 						'required' => 0,
@@ -275,7 +304,7 @@ if( function_exists('acf_add_local_field_group') ):
 					array(
 						'key' => 'field_5f64c5cad50c7',
 						'label' => 'Select Post Type',
-						'name' => 'select_post_type',
+						'name' => 'r_post_type',
 						'type' => 'select',
 						'instructions' => '',
 						'required' => 0,
@@ -286,10 +315,10 @@ if( function_exists('acf_add_local_field_group') ):
 							'id' => '',
 						),
 						'choices' => array(
-							'album' => 'album',
-							'track' => 'track',
-							'event' => 'event',
-							'podcast' => 'podcast',
+							'album' => 'Album',
+							'track' => 'Track',
+							'event' => 'Event',
+							'podcast' => 'Poadcast',
 						),
 						'default_value' => array(
 						),
@@ -303,7 +332,7 @@ if( function_exists('acf_add_local_field_group') ):
 					array(
 						'key' => 'field_5f64c657d50c8',
 						'label' => 'Number of Post',
-						'name' => 'number_of_post',
+						'name' => 'r_number_of_post',
 						'type' => 'number',
 						'instructions' => '',
 						'required' => 0,
@@ -324,7 +353,7 @@ if( function_exists('acf_add_local_field_group') ):
 					array(
 						'key' => 'field_5f64c70198043',
 						'label' => 'Select A category',
-						'name' => 'select_a_category',
+						'name' => 'r_select_a_category',
 						'type' => 'taxonomy',
 						'instructions' => '',
 						'required' => 0,
@@ -343,6 +372,30 @@ if( function_exists('acf_add_local_field_group') ):
 						'return_format' => 'id',
 						'multiple' => 0,
 					),
+					array(
+						'key' => 'field_5f64f29f18f7f',
+						'label' => 'Style',
+						'name' => 'r_style',
+						'type' => 'radio',
+						'instructions' => '',
+						'required' => 0,
+						'conditional_logic' => 0,
+						'wrapper' => array(
+							'width' => '',
+							'class' => '',
+							'id' => '',
+						),
+						'choices' => array(
+							'style1' => 'Style 1',
+							'style2' => 'Style 2',
+						),
+						'allow_null' => 0,
+						'other_choice' => 0,
+						'default_value' => '',
+						'layout' => 'vertical',
+						'return_format' => 'value',
+						'save_other_choice' => 0,
+					),
 				),
 			),
 		),
@@ -351,7 +404,7 @@ if( function_exists('acf_add_local_field_group') ):
 				array(
 					'param' => 'options_page',
 					'operator' => '==',
-					'value' => 'podcast-rss-settings',
+					'value' => 'rekord-app',
 				),
 			),
 		),
