@@ -7,57 +7,47 @@
  * Author: xvelopers
  * Author URI: http://xvelopers.com
  */
+include ( __DIR__ . '/acf.php');
+include ( __DIR__ . '/helpers.php');
+
+include ( __DIR__ . '/RekordArtistsController.php');
+include ( __DIR__ . '/RekordTracksController.php');
+include ( __DIR__ . '/RekordAlbumsController.php');
+
+include ( __DIR__ . '/RekordExploreController.php');
+
+
+function rekord_api_get_explore($post_type){
+    $response = new RekordExploreController();
+    return  $response->get();
+}
 
 
 function rekord_api_get_albums() {
-
+    
+    $albums = new RekordAlbumsController();
 	$posts = rekord_api_get_posts('album');
-	$data =  rekord_api_attach_album_fields($posts);
-
-	
+	$data =  $albums->data($posts);
 	return [
 		'data' => $data,
 		'status' => 200
 	];
 }
-
-
-function rekord_api_attach_album_fields($posts){
-	$data = [];
-	$i = 0;
-	if(!empty($posts)){
-		foreach($posts as $post) {
-			$data[$i]['id'] = $post->ID;
-			$data[$i]['title'] = $post->post_title;
-			$data[$i]['content'] = $post->post_content;
-			$data[$i]['slug'] = $post->post_name;
-			$data[$i]['media']['thumbnail'] = get_the_post_thumbnail_url($post->ID, 'thumbnail');
-			$data[$i]['media']['medium'] = get_the_post_thumbnail_url($post->ID, 'medium');
-			$data[$i]['media']['large'] = get_the_post_thumbnail_url($post->ID, 'large');
-			$data[$i]['media']['cover'] = rekord_get_field('cover',$post->ID)['url']  ;
-			$data[$i]['tracks'] = rekord_album_tracks( $post->ID);
-			
-			$i++;
-		}
-	}
-	return $data;
-}
-
-
-
-
-function rekord_album_tracks($id){
-	$args = rekord_relation_args('track' , 'track_albums',-1, $id);
-	$posts = get_posts($args); //builtin method
-	return rekord_api_attach_track_fields($posts);
-}
-
 
 function rekord_api_get_tracks() {
-
-
+    $tracks = new RekordTracksController();
 	$posts = rekord_api_get_posts('track');
-	$data =  rekord_api_attach_track_fields($posts);
+	$data =  $tracks->data($posts);
+	return [
+		'data' => $data,
+		'status' => 200
+	];
+}
+
+function rekord_api_get_artists() {
+    $artists = new RekordArtistsController();
+	$posts = rekord_api_get_posts('artist');
+	$data =  $artists->data($posts);
 	return [
 		'data' => $data,
 		'status' => 200
@@ -66,46 +56,6 @@ function rekord_api_get_tracks() {
 
 
 
-
-
-function rekord_api_attach_track_fields($posts){
-
-	$data = [];
-	$i = 0;
-
-	if(!empty($posts)){
-		foreach($posts as $post) {
-
-
-			$url =  rekord_get_field('track_upload',$post->ID)['url'];
-			if(rekord_get_field('track',$post->ID) != 'upload'):
-				$url = rekord_get_field('track_url',$post->ID)  ;
-			  endif;   
-		
-			$data[$i]['id'] = $post->ID;
-			$data[$i]['title'] = $post->post_title;
-			$data[$i]['content'] = $post->post_content;
-			$data[$i]['slug'] = $post->post_name;
-			$data[$i]['type'] =  rekord_get_field('track',$post->ID);
-			$data[$i]['stream_type'] =  rekord_get_field('stream_type',$post->ID);
-			$data[$i]['url'] = $url ;
-
-			if(get_the_post_thumbnail_url($post->ID, 'thumbnail')){
-				$data[$i]['media']['thumbnail'] = get_the_post_thumbnail_url($post->ID, 'thumbnail');
-				$data[$i]['media']['medium'] = get_the_post_thumbnail_url($post->ID, 'medium');
-				$data[$i]['media']['large'] = get_the_post_thumbnail_url($post->ID, 'large');
-			}
-		
-			$data[$i]['time'] = rekord_get_field('track_time', $post->ID);
-			$data[$i]['artist'] =  rekord_get_field('track_artists',$post->ID);
-	
-
-//$data[$i]['tracks'] = rekord_relation_args('track' , 'track_albums',-1);
-			$i++;
-		}
-	}
-	return $data;
-}
 
 
 function rekord_api_get_taxonomy(){
@@ -114,76 +64,6 @@ function rekord_api_get_taxonomy(){
 
 	return $terms;
 }
-
-
-function rekord_api_get_posts($post_type){
-	$paged = $_GET['paged'] ?$_GET['paged']: 1;
-	$postsPerPage = !empty($_GET['numberposts'] )? $_GET['numberposts'] : 2;
-	$postOffset = $paged * $postsPerPage;
-	$args = array(
-		'posts_per_page'  => $postsPerPage,
-		//'category_name'   => $btmetanm,
-		'offset'          => $postOffset,
-		'post_type'       => $post_type
-	);
-
-
-	if(!empty($_GET['q'])){
-		$args['s'] =  esc_attr( $_GET['q']);
-		$args['posts_per_page'] = -1;
-	}
-
-	return  get_posts($args);
-}
-
-
-function rekord_api_get_explore($post_type){
-
-	$data = [];
-	$i = 0;
-
-	$sections =  rekord_get_field('explore_screen', 'option');
-
-	foreach($sections as $section){
-		$data[$i]['title'] = $section['r_title'];
-		$data[$i]['type'] = $section['r_post_type'];
-		$data[$i]['r_number_of_post'] = $section['r_number_of_post'];
-
-
-		$args = array(
-			'posts_per_page'  => $section['r_number_of_post'],
-			//'category_name'   => $btmetanm,
-			'offset'          => $postOffset,
-			'post_type'       =>  $section['r_post_type']
-		);
-
-		
-		if($section['r_post_type'] == 'album'){
-			$posts = get_posts($args);
-			$data[$i]['posts'] = rekord_api_attach_album_fields($posts );
-		}
-		
-		if($section['r_post_type'] == 'track'){
-
-			$posts = rekord_api_get_posts('track');
-		
-			$data[$i]['posts'] =rekord_api_attach_track_fields($posts);
-		}
-
-		//$data['sections'][$i] = $section['r_post_type'];	
-
-		$i++;
-	}
-
-	
-	return [
-		'data' => $data,
-		'status' => 200
-	];
-}
-
-
-
 
 
 
@@ -207,10 +87,12 @@ function wl_post( $slug ) {
 	return $data;
 }
 
+
+
 add_action('rest_api_init', function() {
 
 	
-	$routes = ['explore','posts','albums','tracks','taxonomy'];
+	$routes = ['explore','posts','albums','artists','tracks','taxonomy'];
 	foreach($routes as $route){
 		register_rest_route('wl/v1', $route, [
 			'methods' => 'GET',
@@ -228,194 +110,3 @@ add_action('rest_api_init', function() {
 
 
 
-
-	
-if( function_exists('acf_add_options_page') ) {
-  
-	acf_add_options_page(array(
-	  'page_title' 	=> 'Rekord App Settings',
-	  'menu_title'	=> 'Rekord App',
-	  'menu_slug' 	=> 'rekord-app',
-	  'capability'	=> 'edit_posts',
-	//  'parent_slug'	=> 'edit.php?post_type=podcast',
-	  'redirect'		=> false
-	));
-  }
-  if( function_exists('acf_add_local_field_group') ):
-
-	acf_add_local_field_group(array(
-		'key' => 'group_5f64bff58c3d2',
-		'title' => 'Rekord Mobile',
-		'fields' => array(
-			array(
-				'key' => 'field_5f64ef6a615ed',
-				'label' => 'Explore Screen',
-				'name' => '',
-				'type' => 'tab',
-				'instructions' => '',
-				'required' => 0,
-				'conditional_logic' => 0,
-				'wrapper' => array(
-					'width' => '',
-					'class' => '',
-					'id' => '',
-				),
-				'placement' => 'left',
-				'endpoint' => 0,
-			),
-			array(
-				'key' => 'field_5f64c23da4525',
-				'label' => 'Explore Screen Settings',
-				'name' => 'r_explore_screen',
-				'type' => 'repeater',
-				'instructions' => 'Add explore screen sections',
-				'required' => 0,
-				'conditional_logic' => 0,
-				'wrapper' => array(
-					'width' => '',
-					'class' => '',
-					'id' => '',
-				),
-				'collapsed' => '',
-				'min' => 0,
-				'max' => 0,
-				'layout' => 'block',
-				'button_label' => '',
-				'sub_fields' => array(
-					array(
-						'key' => 'field_5f64c388a4526',
-						'label' => 'Title',
-						'name' => 'r_title',
-						'type' => 'text',
-						'instructions' => 'Add section title',
-						'required' => 0,
-						'conditional_logic' => 0,
-						'wrapper' => array(
-							'width' => '',
-							'class' => '',
-							'id' => '',
-						),
-						'default_value' => '',
-						'placeholder' => '',
-						'prepend' => '',
-						'append' => '',
-						'maxlength' => '',
-					),
-					array(
-						'key' => 'field_5f64c5cad50c7',
-						'label' => 'Select Post Type',
-						'name' => 'r_post_type',
-						'type' => 'select',
-						'instructions' => '',
-						'required' => 0,
-						'conditional_logic' => 0,
-						'wrapper' => array(
-							'width' => '',
-							'class' => '',
-							'id' => '',
-						),
-						'choices' => array(
-							'album' => 'Album',
-							'track' => 'Track',
-							'event' => 'Event',
-							'podcast' => 'Poadcast',
-						),
-						'default_value' => array(
-						),
-						'allow_null' => 0,
-						'multiple' => 0,
-						'ui' => 0,
-						'return_format' => 'value',
-						'ajax' => 0,
-						'placeholder' => '',
-					),
-					array(
-						'key' => 'field_5f64c657d50c8',
-						'label' => 'Number of Post',
-						'name' => 'r_number_of_post',
-						'type' => 'number',
-						'instructions' => '',
-						'required' => 0,
-						'conditional_logic' => 0,
-						'wrapper' => array(
-							'width' => '',
-							'class' => '',
-							'id' => '',
-						),
-						'default_value' => 5,
-						'placeholder' => '',
-						'prepend' => '',
-						'append' => '',
-						'min' => '',
-						'max' => '',
-						'step' => '',
-					),
-					array(
-						'key' => 'field_5f64c70198043',
-						'label' => 'Select A category',
-						'name' => 'r_select_a_category',
-						'type' => 'taxonomy',
-						'instructions' => '',
-						'required' => 0,
-						'conditional_logic' => 0,
-						'wrapper' => array(
-							'width' => '',
-							'class' => '',
-							'id' => '',
-						),
-						'taxonomy' => 'category',
-						'field_type' => 'select',
-						'allow_null' => 0,
-						'add_term' => 0,
-						'save_terms' => 0,
-						'load_terms' => 0,
-						'return_format' => 'id',
-						'multiple' => 0,
-					),
-					array(
-						'key' => 'field_5f64f29f18f7f',
-						'label' => 'Style',
-						'name' => 'r_style',
-						'type' => 'radio',
-						'instructions' => '',
-						'required' => 0,
-						'conditional_logic' => 0,
-						'wrapper' => array(
-							'width' => '',
-							'class' => '',
-							'id' => '',
-						),
-						'choices' => array(
-							'style1' => 'Style 1',
-							'style2' => 'Style 2',
-						),
-						'allow_null' => 0,
-						'other_choice' => 0,
-						'default_value' => '',
-						'layout' => 'vertical',
-						'return_format' => 'value',
-						'save_other_choice' => 0,
-					),
-				),
-			),
-		),
-		'location' => array(
-			array(
-				array(
-					'param' => 'options_page',
-					'operator' => '==',
-					'value' => 'rekord-app',
-				),
-			),
-		),
-		'menu_order' => 0,
-		'position' => 'normal',
-		'style' => 'default',
-		'label_placement' => 'top',
-		'instruction_placement' => 'label',
-		'hide_on_screen' => '',
-		'active' => true,
-		'description' => '',
-	));
-	
-	endif;
