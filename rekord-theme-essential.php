@@ -105,7 +105,6 @@ final class Rekord_Theme_Essential {
 		}
 
 		require_once( __DIR__ . '/inc/custom-posts.php' );
-		require_once( __DIR__ . '/inc/api/api.php' );
         
         //WP Widgets
         require_once( __DIR__ . '/wp-widgets/xv_latest_posts_widget.php' );
