@@ -3,7 +3,7 @@
  * Plugin Name: Rekord Theme Essential
  * Description: A must have plugin to enhance Rekord theme functionality.
  * Plugin URI:  https://xvelopers.com/
- * Version:     1.3.8.3
+ * Version:     1.3.9
  * Author:      Nomi
  * Author URI:  https://xvelopers.com/
  * Text Domain: rekord
