@@ -88,8 +88,9 @@ if( function_exists('acf_add_options_page') ) {
 						'choices' => array(
 							'album' => 'Album',
 							'track' => 'Track',
-							'event' => 'Event',
-							'podcast' => 'Poadcast',
+							// 'event' => 'Event',
+							'artist' => 'Artist',
+							
 						),
 						'default_value' => array(
 						),
