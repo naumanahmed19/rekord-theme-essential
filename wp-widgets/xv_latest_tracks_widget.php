@@ -95,10 +95,11 @@ class xv_latest_tracks_wgt extends WP_Widget
             <li class="list-group-item">
                 <div class="d-flex align-items-center">
                     <div>
-                        <a class="no-ajaxy media-url" href="assets/media/track2.mp3"
-                            data-wave="assets/media/track2.json">
-                            <i class="icon-play s-28"></i>
-                        </a>
+                    <?php 
+ 
+                        get_template_part( $slug, 'url' ); 
+             
+                     ?>
                     </div>
                     <div class="col-10">
                         <figure class="avatar-md float-left  mr-3 mt-1">

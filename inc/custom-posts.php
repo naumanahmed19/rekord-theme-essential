@@ -34,7 +34,7 @@ if ( ! function_exists('rekord_post_type_video') ) {
             'menu_position' => 12,
             'supports'      => array( 'title','editor','thumbnail','comments'),
             'has_archive'   => false,
-            'rewrite' => array( 'slug' => 'vidoes', 'with_front' => true ),
+            'rewrite' => array( 'slug' => 'videos', 'with_front' => true ),
         );
         register_post_type( 'video', $args ); 
     }

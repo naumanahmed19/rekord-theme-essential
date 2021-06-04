@@ -97,7 +97,15 @@ class xv_latest_videos_wgt extends WP_Widget
                         <a href="<?php the_permalink(); ?>">
                             <h6><?php the_title(); ?></h6>
                         </a>
-                        <small class="mt-1">Record Studio</small>
+                        <small class="mt-1">
+                        <?php
+                printf( _nx( '1 Comment', '%1$s Comments', get_comments_number(), 'comments title','rekord' ),
+                number_format_i18n( get_comments_number() ));
+
+              
+                ?>
+                        
+                        </small>
                     </div>
                 </div>
             </li>
