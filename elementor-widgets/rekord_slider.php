@@ -225,7 +225,7 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 			[
 				'name' => 'heading_typography',
 				'label' => __( 'Title Typography', 'rekord' ),
-				'scheme' => \Elementor\Scheme_Typography::TYPOGRAPHY_1,
+				'scheme' => \Elementor\Group_Control_Typography::get_type(),
                 'selector' => '{{WRAPPER}} h1',
                 'default'=>'#ffffff',
 			]
@@ -236,8 +236,8 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 				'label' => __( 'Title Color', 'plugin-domain' ),
 				'type' => \Elementor\Controls_Manager::COLOR,
 				'scheme' => [
-					'type' => \Elementor\Scheme_Color::get_type(),
-					'value' => \Elementor\Scheme_Color::COLOR_1,
+					'type' => \Elementor\Core\Schemes\Color::get_type(),
+					'value' => \Elementor\Core\Schemes\Color::COLOR_1,
                 ],
                 'default'=>'#ffffff',
 				'selectors' => [
@@ -251,7 +251,7 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 			[
 				'name' => 'content_typography',
 				'label' => __( 'Content Typography', 'rekord' ),
-                'scheme' => \Elementor\Scheme_Typography::TYPOGRAPHY_1,
+                'scheme' => \Elementor\Group_Control_Typography::get_type(),
                 'default'=>'#ffffff',
 				'selector' => '{{WRAPPER}} .slidercontent p',
 			]
@@ -262,8 +262,8 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 				'label' => __( 'Content Color', 'plugin-domain' ),
 				'type' => \Elementor\Controls_Manager::COLOR,
 				'scheme' => [
-					'type' => \Elementor\Scheme_Color::get_type(),
-					'value' => \Elementor\Scheme_Color::COLOR_1,
+					'type' => \Elementor\Core\Schemes\Color::get_type(),
+					'value' => \Elementor\Core\Schemes\Color::COLOR_1,
                 ],
                 'default'=>'#ffffff',
 				'selectors' => [
@@ -288,8 +288,8 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 		// 		'label' => __( 'Button Text Color', 'plugin-domain' ),
 		// 		'type' => \Elementor\Controls_Manager::COLOR,
 		// 		'scheme' => [
-		// 			'type' => \Elementor\Scheme_Color::get_type(),
-		// 			'value' => \Elementor\Scheme_Color::COLOR_1,
+		// 			'type' => \Elementor\Core\Schemes\Color::get_type(),
+		// 			'value' => \Elementor\Core\Schemes\Color::COLOR_1,
 		// 		],
 		// 		'selectors' => [
 		// 			'{{WRAPPER}} .btn' => 'color: {{VALUE}} !importatnt',
@@ -302,8 +302,8 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 				'label' => __( 'Button Background Color', 'plugin-domain' ),
 				'type' => \Elementor\Controls_Manager::COLOR,
 				'scheme' => [
-					'type' => \Elementor\Scheme_Color::get_type(),
-					'value' => \Elementor\Scheme_Color::COLOR_1,
+					'type' => \Elementor\Core\Schemes\Color::get_type(),
+					'value' => \Elementor\Core\Schemes\Color::COLOR_1,
 				],
 				'selectors' => [
 					'{{WRAPPER}} .btn' => 'background: {{VALUE}}',
